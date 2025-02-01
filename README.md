@@ -1,9 +1,7 @@
-# Terraform template
+# TerraformAzureVmAutoStartStop
 
-Terraform template for modules and submodules.
-Includes pre-commit hooks that lint the terraform code and generate module's
-documentation as part of README file.
-Contains examples of terraform CI/CD pipelines for GitHub Actions and Azure Pipelines.
+Terraform module for automating Azure VM start and stop using Azure Automation and PowerShell playbooks. Enables
+scheduled and on-demand VM management to optimize costs and resource usage.
 
 ## Terraform Init
 
@@ -60,43 +58,3 @@ Contains examples of terraform CI/CD pipelines for GitHub Actions and Azure Pipe
 - See [CreateAzureStorageAccount.ps1](./CreateAzureStorageAccount.ps1)
 
 # Module documentation
-
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
-## Requirements
-
-| Name                                                                | Version |
-|---------------------------------------------------------------------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | =3.71.0 |
-
-## Providers
-
-| Name                                                          | Version |
-|---------------------------------------------------------------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.71.0  |
-
-## Modules
-
-| Name                                                                             | Source                      | Version |
-|----------------------------------------------------------------------------------|-----------------------------|---------|
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | ./modules/example_submodule | n/a     |
-
-## Resources
-
-| Name                                                                                                                              | Type        |
-|-----------------------------------------------------------------------------------------------------------------------------------|-------------|
-| [azurerm_resource_group.public](https://registry.terraform.io/providers/hashicorp/azurerm/3.71.0/docs/resources/resource_group)   | resource    |
-| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.71.0/docs/data-sources/client_config) | data source |
-
-## Inputs
-
-| Name                                                                                                        | Description              | Type     | Default | Required |
-|-------------------------------------------------------------------------------------------------------------|--------------------------|----------|---------|:--------:|
-| <a name="input_prefix"></a> [prefix](#input\_prefix)                                                        | Prefix for all resources | `string` | n/a     |   yes    |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Resource group location  | `string` | n/a     |   yes    |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)             | Resource group name      | `string` | n/a     |   yes    |
-
-## Outputs
-
-No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
