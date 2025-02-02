@@ -1,5 +1,5 @@
 output "automation_account_name" {
-  value       = azurerm_automation_account.automation-account.name
+  value       = azurerm_automation_account.automation_account.name
   description = "The name of the Azure Automation Account"
 }
 

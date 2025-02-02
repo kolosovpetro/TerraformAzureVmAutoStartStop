@@ -1,4 +1,4 @@
-# TerraformAzureVmAutoStartStop
+# Azure VM Start-Stop on Schedule using Terraform, Azure Automation, and PowerShell Runbooks
 
 Automates Azure VM start/stop using Azure Automation and PowerShell runbooks. Deploys Windows/Linux VMs, an Automation
 Account, and a runbook to update PowerShell modules. Dynamically schedules updates (+0.5hr UTC+1) and VM start/stop
