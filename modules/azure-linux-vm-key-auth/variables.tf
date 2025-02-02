@@ -97,3 +97,8 @@ variable "network_security_group_id" {
   type        = string
   description = "ID of the network security group"
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "A mapping of tags to assign to the resource."
+}

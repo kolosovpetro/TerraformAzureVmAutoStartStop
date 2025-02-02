@@ -60,6 +60,8 @@ resource "azurerm_virtual_machine" "public" {
     admin_password = var.os_profile_admin_password
   }
 
+  tags = var.tags
+
   depends_on = [
     azurerm_network_interface_security_group_association.public
   ]

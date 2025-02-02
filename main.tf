@@ -1,3 +1,10 @@
+data "azurerm_client_config" "current" {}
+data "azurerm_subscription" "current" {}
+
+data "local_file" "start-and-stop-vm-script" {
+  filename = "${path.root}/scripts/StartStop-AzureVM.ps1"
+}
+
 module "azure_region" {
   source       = "claranet/regions/azurerm"
   version      = ">=7.0.0"
@@ -12,7 +19,7 @@ resource "azurerm_resource_group" "public" {
 
 resource "azurerm_virtual_network" "public" {
   name                = "vnet-az-automation"
-  address_space = ["10.10.0.0/24"]
+  address_space       = ["10.10.0.0/24"]
   location            = azurerm_resource_group.public.location
   resource_group_name = azurerm_resource_group.public.name
 }
@@ -21,7 +28,7 @@ resource "azurerm_subnet" "public" {
   name                 = "snet-az-automation"
   resource_group_name  = azurerm_resource_group.public.name
   virtual_network_name = azurerm_virtual_network.public.name
-  address_prefixes = ["10.10.0.0/25"]
+  address_prefixes     = ["10.10.0.0/25"]
 }
 
 module "linux_server" {
@@ -46,6 +53,7 @@ module "linux_server" {
   public_ip_name                    = "pip-linux-${var.prefix}"
   subnet_id                         = azurerm_subnet.public.id
   network_security_group_id         = azurerm_network_security_group.public.id
+  tags                              = local.vm_schedule_tags
 }
 
 module "windows_server" {
@@ -64,4 +72,52 @@ module "windows_server" {
   subnet_id                   = azurerm_subnet.public.id
   vm_name                     = "vm-windows-${var.prefix}"
   vm_size                     = "Standard_B4ms"
+  tags                        = local.vm_schedule_tags
+}
+
+# Automation account and runbook module
+
+module "runbook" {
+  source                                      = "./modules/runbook"
+  automation_account_name                     = "aa-${var.prefix}"
+  resource_group_location                     = azurerm_resource_group.public.location
+  resource_group_name                         = azurerm_resource_group.public.name
+  subscription_id                             = data.azurerm_subscription.current.id
+  schedule_updatepsmodules_start_time         = local.schedule_update_ps_modules_start_time
+  local_file_start_and_stop_vm_script_content = data.local_file.start-and-stop-vm-script.content
+}
+
+# Create the schedules
+resource "azurerm_automation_schedule" "start-and-stop-vm-schedule" {
+  name                    = local.schedule_start_stop_vm_name
+  resource_group_name     = azurerm_resource_group.public.name
+  automation_account_name = module.runbook.automation_account_name
+  frequency               = "Hour"
+  interval                = 1
+  timezone                = "Europe/Dublin"
+  start_time              = local.schedule_start_stop_vm_start_time
+  description             = "Hourly schedule to start and stop VMs"
+
+  depends_on = [
+    module.runbook
+  ]
+}
+
+# And finally connect the schedules to the runbook
+resource "azurerm_automation_job_schedule" "start-and-stop-vm-job" {
+  resource_group_name     = azurerm_resource_group.public.name
+  automation_account_name = module.runbook.automation_account_name
+  schedule_name           = local.schedule_start_stop_vm_name
+  runbook_name            = module.runbook.start_and_stop_vm_runbook_name
+
+  parameters = {
+    subscriptionid    = data.azurerm_subscription.current.id
+    resourcegroupname = azurerm_resource_group.public.name
+    tagname           = "StopStartSchedule"
+    timezone          = "GMT Standard Time"
+  }
+
+  depends_on = [
+    azurerm_automation_schedule.start-and-stop-vm-schedule
+  ]
 }
