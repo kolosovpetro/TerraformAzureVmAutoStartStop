@@ -29,7 +29,7 @@ param(
     [parameter(Mandatory = $false)]
     [string]$TagName = "StopStartSchedule",
     [parameter(Mandatory = $false)]
-    [string]$ResourceGroupName = "rg-itms-devqa-03",
+    [string]$ResourceGroupName = "rg-azure-vm-automation-d01",
     [parameter(Mandatory = $false)]
     [string]$TimeZone = "UTC"
 )
