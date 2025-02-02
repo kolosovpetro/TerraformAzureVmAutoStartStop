@@ -14,7 +14,7 @@ resource "azurerm_role_assignment" "rbac_system_identity" {
   role_definition_name = "Contributor"
 }
 
-resource "azurerm_automation_runbook" "update-psmodules" {
+resource "azurerm_automation_runbook" "update_powershell_modules" {
   name                    = "AzureAutomation-Account-Modules-Update"
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name
@@ -29,7 +29,7 @@ resource "azurerm_automation_runbook" "update-psmodules" {
   }
 }
 
-resource "azurerm_automation_schedule" "update-psmodules-schedule" {
+resource "azurerm_automation_schedule" "update_powershell_modules_schedule" {
   name                    = "Update PS Az Modules schedule"
   resource_group_name     = var.resource_group_name
   automation_account_name = azurerm_automation_account.automation-account.name
@@ -41,11 +41,11 @@ resource "azurerm_automation_schedule" "update-psmodules-schedule" {
   month_days              = ["1"]
 }
 
-resource "azurerm_automation_job_schedule" "update-psmodules-job" {
+resource "azurerm_automation_job_schedule" "update_powershell_modules_job" {
   resource_group_name     = var.resource_group_name
   automation_account_name = azurerm_automation_account.automation-account.name
-  schedule_name           = azurerm_automation_schedule.update-psmodules-schedule.name
-  runbook_name            = azurerm_automation_runbook.update-psmodules.name
+  schedule_name           = azurerm_automation_schedule.update_powershell_modules_schedule.name
+  runbook_name            = azurerm_automation_runbook.update_powershell_modules.name
 
   parameters = {
     azuremoduleclass        = "Az"
@@ -54,7 +54,7 @@ resource "azurerm_automation_job_schedule" "update-psmodules-job" {
   }
 }
 
-resource "azurerm_automation_runbook" "start-and-stop-vm" {
+resource "azurerm_automation_runbook" "start_and_stop_vm_runbook" {
   name                    = "Start-and-Stop-VMs"
   location                = var.resource_group_location
   resource_group_name     = var.resource_group_name

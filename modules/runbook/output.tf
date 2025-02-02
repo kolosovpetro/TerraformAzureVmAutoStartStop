@@ -4,6 +4,6 @@ output "automation_account_name" {
 }
 
 output "start_and_stop_vm_runbook_name" {
-  value       = azurerm_automation_runbook.start-and-stop-vm.name
+  value       = azurerm_automation_runbook.start_and_stop_vm_runbook.name
   description = "The name of the Azure Automation Runbook"
 }

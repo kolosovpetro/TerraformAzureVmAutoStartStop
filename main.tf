@@ -1,7 +1,6 @@
-data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
-data "local_file" "start-and-stop-vm-script" {
+data "local_file" "start_stop_powershell_script_path" {
   filename = "${path.root}/scripts/StartStop-AzureVM.ps1"
 }
 
@@ -84,10 +83,11 @@ module "runbook" {
   resource_group_name                         = azurerm_resource_group.public.name
   subscription_id                             = data.azurerm_subscription.current.id
   schedule_updatepsmodules_start_time         = local.schedule_update_ps_modules_start_time
-  local_file_start_and_stop_vm_script_content = data.local_file.start-and-stop-vm-script.content
+  local_file_start_and_stop_vm_script_content = data.local_file.start_stop_powershell_script_path.content
 }
 
 # Create the schedules
+
 resource "azurerm_automation_schedule" "start-and-stop-vm-schedule" {
   name                    = local.schedule_start_stop_vm_name
   resource_group_name     = azurerm_resource_group.public.name
@@ -103,8 +103,8 @@ resource "azurerm_automation_schedule" "start-and-stop-vm-schedule" {
   ]
 }
 
-# And finally connect the schedules to the runbook
-resource "azurerm_automation_job_schedule" "start-and-stop-vm-job" {
+# Connect the schedules to the runbook
+resource "azurerm_automation_job_schedule" "start_stop_job_schedule" {
   resource_group_name     = azurerm_resource_group.public.name
   automation_account_name = module.runbook.automation_account_name
   schedule_name           = local.schedule_start_stop_vm_name
