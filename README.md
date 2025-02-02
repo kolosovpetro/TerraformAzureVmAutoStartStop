@@ -1,7 +1,8 @@
 # TerraformAzureVmAutoStartStop
 
-Terraform module for automating Azure VM start and stop using Azure Automation and PowerShell playbooks. Enables
-scheduled and on-demand VM management to optimize costs and resource usage.
+Automates Azure VM start/stop using Azure Automation and PowerShell runbooks. Deploys Windows/Linux VMs, an Automation
+Account, and a runbook to update PowerShell modules. Dynamically schedules updates (+0.5hr UTC+1) and VM start/stop
+tasks (+1hr UTC+1) based on VM tags to optimize costs.
 
 ## Terraform Init
 
@@ -14,5 +15,3 @@ scheduled and on-demand VM management to optimize costs and resource usage.
     sas_token            = "sas_token"
     ```
 - `terraform init -backend-config="azure.sas.conf" -reconfigure -upgrade`
-
-# Module documentation

@@ -9,4 +9,9 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 ### Changed
 
-- Removed redundant files
+- Deploys `Azure Virtual machines`: Linux and Windows
+- Provisions `Azure Automation Account`
+- Provisions runbook to update `Powershell modules` in `Automation Account`
+- Dynamically provisions `Schedules` for runbook to update Powershell modules (current UTC+1) +0.5hr
+- Provisions runbook to automatically `Start` and `Stop` VMs in a resource groups based on `VM tags`
+- Dynamically provisions schedules for `Start` and `Stop` VMs runbook (current UTC+1) +1hr
