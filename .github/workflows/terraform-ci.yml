@@ -61,7 +61,7 @@ jobs:
         run: |
           echo $PASSWORD > password.txt
         env:
-          PASSWORD: 'p@ssW0rd'
+          PASSWORD: ${{ secrets.PASSWORD }}
 
       - name: Terraform Validate
         run: terraform validate
