@@ -88,7 +88,7 @@ module "runbook" {
 
 # Create the schedules
 
-resource "azurerm_automation_schedule" "start-and-stop-vm-schedule" {
+resource "azurerm_automation_schedule" "start_stop_schedule" {
   name                    = local.schedule_start_stop_vm_name
   resource_group_name     = azurerm_resource_group.public.name
   automation_account_name = module.runbook.automation_account_name
@@ -118,6 +118,6 @@ resource "azurerm_automation_job_schedule" "start_stop_job_schedule" {
   }
 
   depends_on = [
-    azurerm_automation_schedule.start-and-stop-vm-schedule
+    azurerm_automation_schedule.start_stop_schedule
   ]
 }
